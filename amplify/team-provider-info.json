@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-triadh-dev-163314-authRole",
+      "UnauthRoleArn": "arn:aws:iam::211544418920:role/amplify-triadh-dev-163314-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::211544418920:role/amplify-triadh-dev-163314-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-triadh-dev-163314-deployment",
+      "UnauthRoleName": "amplify-triadh-dev-163314-unauthRole",
+      "StackName": "amplify-triadh-dev-163314",
+      "StackId": "arn:aws:cloudformation:us-east-1:211544418920:stack/amplify-triadh-dev-163314/fe659ec0-430a-11ed-b4a4-122e02d59bb3",
+      "AmplifyAppId": "dwqenujmhzkov"
+    }
+  }
+}
