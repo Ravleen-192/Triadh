@@ -48,7 +48,7 @@ export default class WhitePaper extends Component {
       emailValid: false,
       companyValid: false,
       formValid: false,
-      sendMailLink:"https://tnqr3vc7ed.execute-api.us-east-1.amazonaws.com/default/sendwpmail-dev",
+      sendMailLink: "https://tnqr3vc7ed.execute-api.us-east-1.amazonaws.com/default/sendwpmail-dev",
 
     };
     mcontext = this;
@@ -68,7 +68,7 @@ export default class WhitePaper extends Component {
   submitForm() {
     var errMessage = "";
 
-    let { contactModel, sendMailLink} = this.state;
+    let { contactModel, sendMailLink } = this.state;
     console.log("submit form called");
     console.log(contactModel.name, contactModel.title, contactModel.company, contactModel.phone, contactModel.email)
     if (!contactModel.name)
@@ -92,28 +92,26 @@ export default class WhitePaper extends Component {
     if (errMessage === "") {
       console.log("No Error", errMessage);
       mcontext.setOnProgress();
-      //var form = new FormData()
-      //this.getURL();
-      const mailLink = sendMailLink + '?email=' + (String(contactModel.email)) + (String('&name=')) + (String(contactModel.name)) + (String('&title=')) + (String(contactModel.title))+ (String('&company=')) + (String(contactModel.company))+ (String('&title=')) + (String(contactModel.title)) + (String('&phone=')) + (String(contactModel.phone));
-        //?filename=' + encodeURIComponent(String(folder + filename)).replace(/%2F/g, "/") + (String('&contentType=')) + (String(contentType)) + (String('&apiType=')) + (String(type)) + (String('&text=')) + encodeURIComponent(String(input)).replace(/%20/g, "+")
-        console.log(mailLink)
-       
-        let res = axios.post(mailLink)
-            .then(res => {
-              mcontext.setOnProgress();
-                console.log(res);
-                console.log("res.data");
-                mcontext.setState({ msgAlert: 'Thank you for the interest. Please check your email for the download link.' });
-                mcontext.setState({ alertSuccess: 'success' });
-                mcontext.setState({ contactModel: new ContactModel() });
 
-            })
-            .catch(error => {
-              mcontext.setState({ msgAlert: "Please try again after some time" });
-              mcontext.setState({ alertSuccess: 'danger' });
-            });; 
-          }
-      else {
+      const mailLink = sendMailLink + '?email=' + (String(contactModel.email)) + (String('&name=')) + (String(contactModel.name)) + (String('&title=')) + (String(contactModel.title)) + (String('&company=')) + (String(contactModel.company)) + (String('&title=')) + (String(contactModel.title)) + (String('&phone=')) + (String(contactModel.phone));
+      console.log(mailLink)
+
+      let res = axios.post(mailLink)
+        .then(res => {
+          mcontext.setOnProgress();
+          console.log(res);
+          console.log("res.data");
+          mcontext.setState({ msgAlert: 'Thank you for the interest. Please check your email for the download link.' });
+          mcontext.setState({ alertSuccess: 'success' });
+          mcontext.setState({ contactModel: new ContactModel() });
+
+        })
+        .catch(error => {
+          mcontext.setState({ msgAlert: "Please try again after some time" });
+          mcontext.setState({ alertSuccess: 'danger' });
+        });;
+    }
+    else {
       console.log("Error Message", errMessage);
 
       errMessage = "Enter the values for all fields marked (*).";
@@ -172,34 +170,6 @@ export default class WhitePaper extends Component {
   validateForm() {
     this.setState({ formValid: this.state.nameValid && this.state.titleValid && this.state.emailValid && this.state.phoneValid && this.state.companyValid });
     console.log("validatForm", this.state.formValid)
-  }
-  getURL = async () => {
-    let { contactModel } = this.state;
-    const bucketName = "triadhdigital-dev";
-    const identityPoolId = "us-east-1:7824234e-8819-4890-872f-e2638ffa3650";
-    const accessKeyId = "AKIATCQIHVJUF2KJWQHX";
-    const secretKey = "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";
-    const value1="whitepaper/HeliosWhitepaper.pdf"
-    
-    require('dotenv')
-    require('dotenv').config();
-    var AWS = require('aws-sdk');
-    var credentials = {
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretKey,
-      identity_pool_id: identityPoolId
-    };
-    AWS.config.update({ credentials: credentials, region: 'us-east-1' });
-    var s3 = new AWS.S3();
-
-    var presignedGETURLatt = s3.getSignedUrl('getObject', {
-      Bucket: bucketName,
-      Key: `${value1}`, //filename
-      Expires: 1000 //time to expire in seconds
-    });
-    console.log(presignedGETURLatt);
-    contactModel.surl=presignedGETURLatt;
-
   }
   render() {
     let { contactModel } = this.state
