@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -95,6 +93,7 @@ export default class WhitePaper extends Component {
 
       const mailLink = sendMailLink + '?email=' + (String(contactModel.email)) + (String('&name=')) + (String(contactModel.name)) + (String('&title=')) + (String(contactModel.title)) + (String('&company=')) + (String(contactModel.company)) + (String('&title=')) + (String(contactModel.title)) + (String('&phone=')) + (String(contactModel.phone));
       console.log(mailLink)
+      
 
       let res = axios.post(mailLink)
         .then(res => {

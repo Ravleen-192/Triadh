@@ -11,6 +11,7 @@ var mContext;
 export default class Plutus extends Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             isFlipped1: false,
             isFlipped2: false,

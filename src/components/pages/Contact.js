@@ -369,6 +369,7 @@ export default class Contact extends Component {
               : this.state.alertSuccess === 'danger' ? <Alert severity="error" onClose={this.onDismiss}>
                 {this.state.msgAlert}
               </Alert> : null}
+              
             <div className="container-fluid text-center mt_20 mb_20">
               <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
                 <Button className="submitBtn" onClick={() => this.submitForm()}>Submit</Button>

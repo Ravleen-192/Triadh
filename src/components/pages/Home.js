@@ -14,7 +14,8 @@ var mContext;
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        
+        this.state = {           
             isFlipped1: false,
             isFlipped2: false,
             isFlipped3: false,

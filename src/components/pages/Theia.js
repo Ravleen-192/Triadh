@@ -13,6 +13,7 @@ var mContext;
 export default class Theia extends Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             isFlipped1: false,
             isFlipped2: false,
