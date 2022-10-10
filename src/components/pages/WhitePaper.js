@@ -1,16 +1,9 @@
-
-
-import React, { useState, useEffect } from 'react'
+import React, { Component } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-/*import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import WPF from '../../image/Whitepaperform.jpg';
-import { CenterFocusStrong } from '@material-ui/icons';*/
-import { Alert } from "reactstrap"
+
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -21,35 +14,63 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import WP from '../../image/Whitepaper.jpg';
 import { FormErrors } from '../FormErrors';
-import { Col } from 'reactstrap';
-
+import { Col, Label } from 'reactstrap';
+import { Helmet } from "react-helmet";
+import TopBarProgress from "react-topbar-progress-indicator";
+import { Alert } from '@mui/material';
+import '../../App.css';
+import axios from 'axios';
 var validator = require("email-validator");
 const theme = createTheme();
+var mcontext;
+TopBarProgress.config({
+  barColors: {
+    "0": "#B0EADE",
+    "1.0": "#B0EADE"
+  },
+  shadowBlur: 5,
+  shadowColor: "#B0EADE"
+});
+export default class WhitePaper extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      contactModel: new ContactModel(),
+      errMessage: "",
+      msgAlert: "",
+      alertSuccess: '',
+      bVisible: false,
+      formErrors: { Name: '', Title: '', Email: '', Phone: '', Company: '', },
+      nameValid: false,
+      titleValid: false,
+      phoneValid: false,
+      emailValid: false,
+      companyValid: false,
+      formValid: false,
+      sendMailLink:"https://tnqr3vc7ed.execute-api.us-east-1.amazonaws.com/default/sendwpmail-dev",
 
-const  WhitePaper=() => {
-  const contactModel = new ContactModel();
-  const [errMessage, seterrMessage] = useState("");
-  const [msgAlert, setmsgAlert] = useState("");
-  const [alertSuccess, setalertSuccess] = useState('');
-  const [bVisible, setbVisible] = useState(false);
-  const [formErrors, setformErrors] = useState([]);
-  const [nameValid, setnameValid] = useState(false);
-  const [titleValid, settitleValid] = useState(false);
-  const [phoneValid, setphoneValid] = useState(false);
-  const [emailValid, setemailValid] = useState(false);
-  const [companyValid, setcompanyValid] = useState(false);
-  const [formValid, setformValid] = useState(false);
+    };
+    mcontext = this;
 
-  const onDismiss = () => {
-    setbVisible(false);
-    setalertSuccess('');
-    setmsgAlert("");
+    this.onDismiss = this.onDismiss.bind(this);
   }
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  componentWillMount() {
+    window.scrollTo(0, 0);
+  }
 
+  onDismiss() {
+    this.setState({ visible: false });
+    this.setState({ alertSuccess: '' });
+    this.setState({ msgAlert: "" });
+  }
+
+  submitForm() {
     var errMessage = "";
 
+    let { contactModel, sendMailLink} = this.state;
+    console.log("submit form called");
+    console.log(contactModel.name, contactModel.title, contactModel.company, contactModel.phone, contactModel.email)
     if (!contactModel.name)
       errMessage = errMessage + "Name Required. \r\n";
     if (!contactModel.title)
@@ -66,306 +87,343 @@ const  WhitePaper=() => {
     if (!contactModel.company) {
       errMessage = errMessage + "Company name Required. \r\n";
     }
-    if (!formValid) {
-      errMessage = "Please check all entries."
-    }
-    if (errMessage === "") {
-      var form = new FormData()
-      form.append('name', contactModel.name);
-      form.append('title', contactModel.jobtitle);
-      form.append('email', contactModel.email);
-      form.append('phone', contactModel.phone);
-      form.append('company', contactModel.company);
 
-      var xhr = new XMLHttpRequest()
-      //xhr.withCredentials = true;
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          console.log("status = ", xhr.status);
-          if (xhr.status === 200) {
-            setmsgAlert("Thank you for the interest. Please check your email for the Download Link.");
-            setalertSuccess('success');
-            contactModel = new ContactModel();
-          } else {
-            setmsgAlert("Please try again after some time");
-            setalertSuccess('danger');
+
+    if (errMessage === "") {
+      console.log("No Error", errMessage);
+      mcontext.setOnProgress();
+      //var form = new FormData()
+      //this.getURL();
+      const mailLink = sendMailLink + '?email=' + (String(contactModel.email)) + (String('&name=')) + (String(contactModel.name)) + (String('&title=')) + (String(contactModel.title))+ (String('&company=')) + (String(contactModel.company))+ (String('&title=')) + (String(contactModel.title)) + (String('&phone=')) + (String(contactModel.phone));
+        //?filename=' + encodeURIComponent(String(folder + filename)).replace(/%2F/g, "/") + (String('&contentType=')) + (String(contentType)) + (String('&apiType=')) + (String(type)) + (String('&text=')) + encodeURIComponent(String(input)).replace(/%20/g, "+")
+        console.log(mailLink)
+       
+        let res = axios.post(mailLink)
+            .then(res => {
+              mcontext.setOnProgress();
+                console.log(res);
+                console.log("res.data");
+                mcontext.setState({ msgAlert: 'Thank you for the interest. Please check your email for the download link.' });
+                mcontext.setState({ alertSuccess: 'success' });
+                mcontext.setState({ contactModel: new ContactModel() });
+
+            })
+            .catch(error => {
+              mcontext.setState({ msgAlert: "Please try again after some time" });
+              mcontext.setState({ alertSuccess: 'danger' });
+            });; 
           }
-          console.log(xhr.responseText)
-        }
-      }
-      //xhr.open("POST", "https://toxsswlv99.execute-api.us-east-1.amazonaws.com/prod/dsk");
-      xhr.open("POST", "https://hdy1gtzwre.execute-api.us-east-1.amazonaws.com/default/SendEmail-test");
-      xhr.setRequestHeader("content-type", "application/json");
-      xhr.send(form);
-    }
-    else {
+      else {
       console.log("Error Message", errMessage);
 
       errMessage = "Enter the values for all fields marked (*).";
-      seterrMessage(errMessage);
+      this.setState({ errMessage: errMessage });
+
     }
   }
-  const validateField = (fieldName, value) =>{
-
-    let fieldValidationErrors = formErrors;
-    let nameValid = {nameValid};
-    let titleValid = {titleValid};
-    let emailValid = {emailValid};
-    let phoneValid = {phoneValid};
-    let companyValid = {companyValid};
-    console.log("Validateield", titleValid);
+  setOnProgress() {
+    mcontext.setState(prevState => ({ loading: !prevState.loading }));
+  }
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let nameValid = this.state.nameValid;
+    let titleValid = this.state.titleValid;
+    let emailValid = this.state.emailValid;
+    let phoneValid = this.state.phoneValid;
+    let companyValid = this.state.companyValid;
     switch (fieldName) {
-      case 'name':
+      case 'Name':
         console.log("validate field", fieldName);
         nameValid = value.length >= 4;
         fieldValidationErrors.Name = nameValid ? '' : ' is too short';
         break;
-      case 'jobtitle':
+      case 'Title':
         titleValid = value.length >= 4;
         fieldValidationErrors.Title = titleValid ? '' : ' is too short';
         break;
 
-      case 'phone':
+      case 'Phone':
 
         phoneValid = value.length >= 10;
-        fieldValidationErrors.phone = phoneValid ? '' : ' is not valid';
+        fieldValidationErrors.Phone = phoneValid ? '' : ' is not valid';
 
         break;
-      case 'email':
+      case 'Email':
         emailValid = value.match(/^[a-zA-Z0-9.%+-]+@(?!gmail.com)(?!yahoo.com)(?!hotmail.com)(?!yahoo.co.in)(?!aol.com)(?!live.com)(?!outlook.com)(?!rediffmail.com)([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : ' is invalid. Only business email id allowed.';
+        fieldValidationErrors.Email = emailValid ? '' : ' is invalid. Only business email id allowed.';
         break;
-      case 'company':
+      case 'Company':
         companyValid = value.length >= 2;
-        fieldValidationErrors.company = companyValid ? '' : ' is too short';
+        fieldValidationErrors.Company = companyValid ? '' : ' is too short';
         break;
       default:
         break;
     }
-
-    setformErrors(fieldValidationErrors);
-    setnameValid(nameValid);
-    settitleValid(titleValid);
-    setcompanyValid(companyValid);
-    setemailValid(emailValid);
-    setphoneValid(phoneValid);
-
-    validateForm();
+    this.setState({
+      formErrors: fieldValidationErrors,
+      nameValid: nameValid,
+      titleValid: titleValid,
+      companyValid: companyValid,
+      emailValid: emailValid,
+      phoneValid: phoneValid
+    }, this.validateForm);
   }
 
-  const validateForm = () => {
-    console.log("validateform", nameValid, titleValid, emailValid, phoneValid, companyValid)
-    setformValid(nameValid && titleValid && emailValid && phoneValid && companyValid);
+  validateForm() {
+    this.setState({ formValid: this.state.nameValid && this.state.titleValid && this.state.emailValid && this.state.phoneValid && this.state.companyValid });
+    console.log("validatForm", this.state.formValid)
   }
+  getURL = async () => {
+    let { contactModel } = this.state;
+    const bucketName = "triadhdigital-dev";
+    const identityPoolId = "us-east-1:7824234e-8819-4890-872f-e2638ffa3650";
+    const accessKeyId = "AKIATCQIHVJUF2KJWQHX";
+    const secretKey = "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";
+    const value1="whitepaper/HeliosWhitepaper.pdf"
+    
+    require('dotenv')
+    require('dotenv').config();
+    var AWS = require('aws-sdk');
+    var credentials = {
+      accessKeyId: accessKeyId,
+      secretAccessKey: secretKey,
+      identity_pool_id: identityPoolId
+    };
+    AWS.config.update({ credentials: credentials, region: 'us-east-1' });
+    var s3 = new AWS.S3();
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '600' }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: `url(${WP})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            textAlign: 'center',
-          }}
-        >
-          <br />
-          <br />
-          <h2>What are Data Mesh Principles and Logical Architecture</h2>
-          <h3>How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh</h3>
+    var presignedGETURLatt = s3.getSignedUrl('getObject', {
+      Bucket: bucketName,
+      Key: `${value1}`, //filename
+      Expires: 1000 //time to expire in seconds
+    });
+    console.log(presignedGETURLatt);
+    contactModel.surl=presignedGETURLatt;
+
+  }
+  render() {
+    let { contactModel } = this.state
+    return (
+      <div>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Helios Whitepaper</title>
+          <meta name="description" content="Data Mesh Principles and Logical Architecture." />
+          {/* <link rel="canonical" href="" /> */}
+        </Helmet>
+        <div>{this.state.loading && <TopBarProgress />}</div>
+        <ThemeProvider theme={theme}>
+          <Grid container component="main" sx={{ height: '600' }}>
+            <CssBaseline />
+            <Grid
+              item
+              xs={false}
+              sm={4}
+              md={7}
+              sx={{
+                backgroundImage: `url(${WP})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: (t) =>
+                  t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                textAlign: 'center',
+              }}
+            >
+              <br />
+              <br />
+              <h2>What are Data Mesh Principles and Logical Architecture</h2>
+              <h3>How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh</h3>
 
 
-          <h3> Become data-driven, use data to compete, or use data at scale to drive value</h3>
-          <h4>Download Triadh’s new white paper to learn: </h4>
+              <h3> Become data-driven, use data to compete, or use data at scale to drive value</h3>
+              <h4>Download Triadh’s new white paper to learn: </h4>
 
-          <p>Today’s landscape of operational data and analytical data.
-            Operational data sits in databases behind business capabilities served with microservices,
-            has a transactional nature, keeps the current state and serves the needs of
-            the applications running the business.
-            Analytical data is a temporal and aggregated view of the facts of the business over time,
-            often modeled to provide retrospective or future-perspective insights;
-            it trains the ML models or feeds the analytical reports. </p>
-          <h2>Get a headstart now.</h2></Grid>
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
-            sx={{
-              my: 4,//8
-              mx: 4,//4
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              <p>Today’s landscape of operational data and analytical data.
+                Operational data sits in databases behind business capabilities served with microservices,
+                has a transactional nature, keeps the current state and serves the needs of
+                the applications running the business.
+                Analytical data is a temporal and aggregated view of the facts of the business over time,
+                often modeled to provide retrospective or future-perspective insights;
+                it trains the ML models or feeds the analytical reports. </p>
+              <h2>Get a headstart now.</h2></Grid>
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+              <Box
+                sx={{
+                  my: 4,//8
+                  mx: 4,//4
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
 
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: '#0D9F98' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Fill out the form.
-
-            </Typography>
-            {alertSuccess === 'success' ? <Alert color="success" isOpen={bVisible} toggle={onDismiss}>
-              {msgAlert}
-            </Alert>
-              : alertSuccess === 'danger' ? <Alert color="danger" isOpen={bVisible} toggle={onDismiss}>
-                {msgAlert}
-              </Alert> : null}
-            <div className="container-fluid text-center  contact-val ">
-              <Col md='12' sm="12" xs="12" lg="12" xl="12">
-                <FormErrors formErrors={formErrors} />
-              </Col>
-            </div>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Name"
-                name="name"
-                autoFocus
-                onInvalid={e => e.target.setCustomValidity("Please enter the first name")}
-                onInput={e => e.target.setCustomValidity("")}
-                onChange={(event) => {
-                  event.preventDefault();
-                  const name = event.target.name;
-                  const value = event.target.value;
-                  contactModel.name = event.target.value;
-                  seterrMessage(null);
-                  validateField(name, value);
                 }}
-
-              />
-
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="company"
-                label="Company"
-                name="company"
-                onInvalid={e => e.target.setCustomValidity("Please enter the company name")}
-                onInput={e => e.target.setCustomValidity("")}
-                onChange={(event) => {
-                  event.preventDefault();
-                  const name = event.target.name;
-                  const value = event.target.value;
-                  contactModel.company = event.target.value;
-                  seterrMessage(null);
-                  validateField(name, value);
-                }}
-
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="jobtitle"
-                label="Job Title"
-                type="text"
-                id="jobtitle"
-                onInvalid={e => e.target.setCustomValidity("Please enter the job title")}
-                onInput={e => e.target.setCustomValidity("")}
-                onChange={(event) => {
-                  event.preventDefault();
-                  const name = event.target.name;
-                  const value = event.target.value;
-                  contactModel.jobtitle = event.target.value;
-                  seterrMessage(null);
-                  validateField(name, value);
-                }}
-
-              />
-              <PhoneInput
-                name="Phone"
-                international
-                defaultCountry="US"
-                limitMaxLength
-                required
-                fullWidth
-                id="phone"
-                label="Phone"
-                onChange={(value) => {
-                  //event.preventDefault();
-                  const name = "phone";
-                  const val = value;
-                  contactModel.phone = value;
-                  seterrMessage(null);
-                  if (value) {
-                    validateField(name, val);
-                  }
-                }
-                }
-
-
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="email"
-                label="Business email"
-                type="text"
-                id="email"
-                onInvalid={e => e.target.setCustomValidity("Please enter your business email")}
-                onInput={e => e.target.setCustomValidity("")}
-                onChange={(event) => {
-                  event.preventDefault();
-                  const name = event.target.name;
-                  const value = event.target.value;
-                  contactModel.email = event.target.value;
-                  seterrMessage(null);
-                  validateField(name, value);
-                }}
-
-              />
-              {/*<FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-          />*/}
-              <Button
-                type="submit"
-                fullWidth
-
-                variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: '#0D9F98' }}
               >
-                Get the Whitepaper
-              </Button>
-              <div className="container-fluid mt_20 mb_20">
-                <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
-                  {errMessage ? <div className="row text-center error-lbl-textarea">{errMessage}</div> : null}
-                </Col>
-              </div>
-              {/* <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                <Avatar sx={{ m: 1, bgcolor: '#0D9F98' }}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Fill out the form.
+
+                </Typography>
+                {this.state.alertSuccess === 'success' ? <Alert severity="success" onClose={this.onDismiss}>
+                  {this.state.msgAlert}
+                </Alert>
+                  : this.state.alertSuccess === 'danger' ? <Alert severity="error" onClose={this.onDismiss}>
+                    {this.state.msgAlert}
+                  </Alert> : null}
+                <div className="container-fluid text-center  contact-val">
+                  <Col md='12' sm="12" xs="12" lg="12" xl="12">
+                    <FormErrors formErrors={this.state.formErrors} />
+                  </Col>
+                </div>
+                <div className=" container-fluid input-text " md="12" sm="12" xs="12" lg="12" xl="12">
+
+                  <div className=" td__header-content" md="12" sm="12" xs="12" lg="12" xl="12">
+                    <div><Label className="content lbl_txt">Name:<sup className="red_star">*</sup></Label></div>
+
+                    <div className='td__header-content__inputwp '>
+                      {/* <input type="file" onChange={(event)=>this.Upload(event)}></input> */}
+                      <input type="text" className="form-control" name="Name"
+                        value={contactModel.name ? contactModel.name : ""}
+                        ref={"name"}
+                        // onChange={(event) => this.onChange(event)}
+                        onChange={(event) => {
+                          event.preventDefault();
+                          const name = event.target.name;
+                          const value = event.target.value;
+                          contactModel.name = event.target.value;
+                          //this.setState({ contactModel, nameError: null },);
+                          this.setState({ msgInfocus: false });
+                          this.setState({ errMessage: null })
+                          this.setState({ [name]: value },
+                            () => { this.validateField(name, value) });
+
+                        }}
+                        maxLength={50} required
+
+                      ></input>
+
+                    </div>
+                  </div>
+                  <div className=" td__header-content" md="12" sm="12" xs="12" lg="12" xl="12">
+                    <div><Label className="content lbl_txt">Job Title:<sup className="red_star">*</sup></Label></div>
+
+                    <div className='td__header-content__inputwp '>
+                      <input type="text" className="form-control" name="Title"
+                        value={contactModel.title ? contactModel.title : ''}
+                        ref={"title"}
+                        onChange={(event) => {
+                          event.preventDefault();
+                          const name = event.target.name;
+                          const value = event.target.value;
+                          contactModel.title = event.target.value;
+                          //this.setState({ contactModel, nameError: null },);
+                          this.setState({ msgInfocus: false });
+                          this.setState({ errMessage: null })
+                          this.setState({ [name]: value },
+                            () => { this.validateField(name, value) });
+
+                        }}
+                        maxLength={30}
+                        required></input>
+                    </div>
+                  </div>
+                  <div className=" td__header-content" md="12" sm="12" xs="12" lg="12" xl="12">
+                    <div><Label className="content lbl_txt">Company:<sup className="red_star">*</sup></Label></div>
+
+                    <div className='td__header-content__inputwp '>
+                      <input type="text" className="form-control" name="Company"
+                        value={contactModel.company ? contactModel.company : ''}
+                        ref={"company"}
+                        onChange={(event) => {
+                          event.preventDefault();
+                          const name = event.target.name;
+                          const value = event.target.value;
+                          contactModel.company = event.target.value;
+
+                          this.setState({ errMessage: null })
+                          this.setState({ [name]: value },
+                            () => { this.validateField(name, value) });
+
+                        }}
+                        maxLength={30}
+                        required></input>
+                    </div>
+                  </div>
+
+                  <div className=" td__header-content" md="12" sm="12" xs="12" lg="12" xl="12">
+                    <div><Label className="content lbl_txt">Work Email:<sup className="red_star">*</sup></Label></div>
+
+                    <div className='td__header-content__inputwp '>
+                      <input type="email" className="form-control" name="Email"
+                        value={contactModel.email ? contactModel.email : ''}
+                        ref={"email"}
+                        onChange={(event) => {
+                          const name = event.target.name;
+                          const value = event.target.value;
+                          contactModel.email = event.target.value;
+
+                          this.setState({ errMessage: null });
+                          this.setState({ [name]: value },
+                            () => { this.validateField(name, value) });
+
+                        }}
+                        required></input>
+                    </div>
+                  </div>
+                  <div className=" td__header-content" md="12" sm="12" xs="12" lg="12" xl="12">
+
+                    <div><Label className="content lbl_txt">Work Phone:<sup className="red_star">*</sup></Label></div>
+
+                    <div className='td__header-content__inputwp '>
+                      <PhoneInput name="Phone"
+                        international
+                        defaultCountry="US"
+                        value={contactModel.phone ? contactModel.phone : ""}
+                        limitMaxLength
+                        autoFocus={this.state.autoFocus}
+                        onChange={(value) => {
+                          //event.preventDefault();
+                          const name = "Phone";
+                          const val = value;
+                          contactModel.phone = value;
+
+                          this.setState({ errMessage: null });
+
+                          if (value) {
+                            this.setState({ [name]: value },
+                              () => { this.validateField(name, val) });
+                          }
+
+                        }}
+                      />
+
+                    </div>
+                  </div>
+                </div>
+                <div className="container-fluid input-text">
+                  <Col >
+                    <div className="container-fluid text-center">
+                      <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
+                        <Button className="submitBtn" onClick={() => this.submitForm()}>Submit</Button>
+                      </Col>
+                    </div>
+                    <div className="container-fluid mb_10">
+                      <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
+                        {this.state.errMessage ? <div className="row text-center error-lbl-textarea">{this.state.errMessage}</div> : null}
+                      </Col>
+                    </div>
+                  </Col>
+                </div>
+              </Box>
+            </Grid>
           </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />*/}
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
-  );
+        </ThemeProvider>
+      </div >
+    );
+  }
 }
-export default  WhitePaper;
+
 class ContactModel {
   constructor() {
 

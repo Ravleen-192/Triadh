@@ -10,6 +10,20 @@
       "StackName": "amplify-triadh-dev-163314",
       "StackId": "arn:aws:cloudformation:us-east-1:211544418920:stack/amplify-triadh-dev-163314/fe659ec0-430a-11ed-b4a4-122e02d59bb3",
       "AmplifyAppId": "dwqenujmhzkov"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dwqenujmhzkov",
+          "type": "cicd"
+        }
+      },
+      "function": {
+        "sendwpmail": {
+          "deploymentBucketName": "amplify-triadh-dev-163314-deployment",
+          "s3Key": "amplify-builds/sendwpmail-5164704f6e5177583735-build.zip"
+        }
+      }
     }
   }
 }

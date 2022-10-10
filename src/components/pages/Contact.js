@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Col, Label, Button } from 'reactstrap';
 import { FormErrors } from '../FormErrors';
-import { Alert } from "reactstrap"
+import { Alert } from '@mui/material';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { Helmet } from "react-helmet";
 import { GoogleReCaptchaProvider, GoogleReCaptcha } from 'react-google-recaptcha-v3';
 import TopBarProgress from "react-topbar-progress-indicator";
+import '../../App.css';
 var validator = require("email-validator");
 
 var mcontext;
@@ -22,7 +23,7 @@ export default class Contact extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      msgInfocus:false,
+      msgInfocus: false,
       email: '',
       phone: '',
       name: '',
@@ -80,8 +81,7 @@ export default class Contact extends Component {
     if (!contactModel.message) {
       errMessage = errMessage + "Message Required. \r\n";
     }
-    if(!this.state.formValid)
-    {
+    if (!this.state.formValid) {
       errMessage = "Please check all entries."
     }
     if (errMessage === "") {
@@ -111,14 +111,14 @@ export default class Contact extends Component {
           console.log(xhr.responseText)
         }
       }
-      xhr.open("POST", "https://toxsswlv99.execute-api.us-east-1.amazonaws.com/prod/dsk");
-      //xhr.open("POST", "https://hdy1gtzwre.execute-api.us-east-1.amazonaws.com/default/SendEmail-test");
+      //xhr.open("POST", "https://toxsswlv99.execute-api.us-east-1.amazonaws.com/prod/dsk");
+      xhr.open("POST", "https://hdy1gtzwre.execute-api.us-east-1.amazonaws.com/default/SendEmail-test");
       xhr.setRequestHeader("content-type", "application/json");
       xhr.send(form);
     }
     else {
       console.log("Error Message", errMessage);
-      
+
       errMessage = "Enter the values for all fields marked (*).";
       this.setState({ errMessage: errMessage });
     }
@@ -208,12 +208,12 @@ export default class Contact extends Component {
             } />
         </GoogleReCaptchaProvider>
 
-        {!this.state.msgInfocus?
-        <div className="container-fluid text-center  contact-val ">
-          <Col md='12' sm="12" xs="12" lg="12" xl="12">
-            <FormErrors formErrors={this.state.formErrors} />
-          </Col>
-        </div>:null}
+        {!this.state.msgInfocus ?
+          <div className="container-fluid text-center  contact-val ">
+            <Col md='12' sm="12" xs="12" lg="12" xl="12">
+              <FormErrors formErrors={this.state.formErrors} />
+            </Col>
+          </div> : null}
         <div className=" container-fluid input-text " md="12" sm="12" xs="12" lg="12" xl="12">
 
           <div className="td__header mb_20" >
@@ -234,7 +234,7 @@ export default class Contact extends Component {
                     const value = event.target.value;
                     contactModel.name = event.target.value;
                     //this.setState({ contactModel, nameError: null },);
-                    this.setState({msgInfocus:false});
+                    this.setState({ msgInfocus: false });
                     this.setState({ errMessage: null })
                     this.setState({ [name]: value },
                       () => { this.validateField(name, value) });
@@ -259,7 +259,7 @@ export default class Contact extends Component {
                     const value = event.target.value;
                     contactModel.title = event.target.value;
                     //this.setState({ contactModel, nameError: null },);
-                    this.setState({msgInfocus:false});
+                    this.setState({ msgInfocus: false });
                     this.setState({ errMessage: null })
                     this.setState({ [name]: value },
                       () => { this.validateField(name, value) });
@@ -282,7 +282,7 @@ export default class Contact extends Component {
                     const value = event.target.value;
                     contactModel.email = event.target.value;
                     //this.setState({ contactModel, nameError: null },);
-                    this.setState({msgInfocus:false});
+                    this.setState({ msgInfocus: false });
                     this.setState({ errMessage: null });
                     this.setState({ [name]: value },
                       () => { this.validateField(name, value) });
@@ -307,7 +307,7 @@ export default class Contact extends Component {
                     contactModel.phone = value;
                     //this.setState({ contactModel, nameError: null },);
                     this.setState({ errMessage: null });
-                    this.setState({msgInfocus:true});
+                    this.setState({ msgInfocus: true });
                     if (value) {
                       this.setState({ [name]: value },
                         () => { this.validateField(name, val) });
@@ -324,12 +324,12 @@ export default class Contact extends Component {
           </div>
 
         </div>
-        {this.state.msgInfocus?
-        <div className="container-fluid text-center  contact-val">
-          <Col md='12' sm="12" xs="12" lg="12" xl="12">
-            <FormErrors formErrors={this.state.formErrors} />
-          </Col>
-        </div>:null}
+        {this.state.msgInfocus ?
+          <div className="container-fluid text-center  contact-val">
+            <Col md='12' sm="12" xs="12" lg="12" xl="12">
+              <FormErrors formErrors={this.state.formErrors} />
+            </Col>
+          </div> : null}
         <div className="container-fluid text-left  contact">
           <Col >
             <h6 className="title-txt">HOW CAN WE HELP YOU?</h6>
@@ -352,7 +352,7 @@ export default class Contact extends Component {
                     const name = event.target.name;
                     const value = event.target.value;
                     contactModel.message = event.target.value;
-                    this.setState({msgInfocus:true});
+                    this.setState({ msgInfocus: true });
                     this.setState({ [name]: value },
                       () => { this.validateField(name, value) });
 
@@ -363,10 +363,10 @@ export default class Contact extends Component {
 
               <Col md="2" lg="2" xl="2"></Col>
             </div>
-            {this.state.alertSuccess === 'success' ? <Alert color="success" isOpen={this.state.visible} toggle={this.onDismiss}>
+            {this.state.alertSuccess === 'success' ? <Alert severity="success" onClose={this.onDismiss}>
               {this.state.msgAlert}
             </Alert>
-              : this.state.alertSuccess === 'danger' ? <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+              : this.state.alertSuccess === 'danger' ? <Alert severity="error" onClose={this.onDismiss}>
                 {this.state.msgAlert}
               </Alert> : null}
             <div className="container-fluid text-center mt_20 mb_20">
