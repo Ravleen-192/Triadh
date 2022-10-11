@@ -111,8 +111,8 @@ export default class Contact extends Component {
           console.log(xhr.responseText)
         }
       }
-      //xhr.open("POST", "https://toxsswlv99.execute-api.us-east-1.amazonaws.com/prod/dsk");
-      xhr.open("POST", "https://hdy1gtzwre.execute-api.us-east-1.amazonaws.com/default/SendEmail-test");
+      xhr.open("POST", "https://toxsswlv99.execute-api.us-east-1.amazonaws.com/prod/dsk");
+      //xhr.open("POST", "https://hdy1gtzwre.execute-api.us-east-1.amazonaws.com/default/SendEmail-test");
       xhr.setRequestHeader("content-type", "application/json");
       xhr.send(form);
     }

@@ -7,7 +7,7 @@ from email_send_config import *
 def compose_msg(to_address, name, surl):
     # Create message container - the correct MIME type is multipart/alternative.
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = 'Whitepaper form Triadh digital'
+    msg['Subject'] = 'Whitepaper from Triadh digital'
     msg['From'] = "Triadh <"+FROM_ADDR+">"
     msg['To'] = ', '.join([to_address])
     msg['Cc'] = ', '.join(CC_ADDR)

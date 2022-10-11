@@ -21,7 +21,7 @@
       "function": {
         "sendwpmail": {
           "deploymentBucketName": "amplify-triadh-dev-163314-deployment",
-          "s3Key": "amplify-builds/sendwpmail-7a6d65554b6279646130-build.zip"
+          "s3Key": "amplify-builds/sendwpmail-6c6e626f656a476a306b-build.zip"
         }
       }
     }
