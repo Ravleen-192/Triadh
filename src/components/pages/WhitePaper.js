@@ -106,7 +106,8 @@ export default class WhitePaper extends Component {
 
         })
         .catch(error => {
-          mcontext.setState({ msgAlert: "Please try again after some time" });
+          console.log(error);
+          mcontext.setState({ msgAlert: error.message});
           mcontext.setState({ alertSuccess: 'danger' });
         });;
     }
@@ -268,6 +269,7 @@ export default class WhitePaper extends Component {
                             () => { this.validateField(name, value) });
 
                         }}
+                        autoFocus
                         maxLength={50} required
 
                       ></input>

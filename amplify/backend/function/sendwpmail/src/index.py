@@ -1,5 +1,6 @@
 import json
 from email_send import *
+from smtplib import SMTPResponseException
 from urllib.parse import unquote
 import json
 import logging
@@ -32,31 +33,41 @@ def handler(event, context):
     print('received context:')
     print(context)
     print(event)
-    es = email_sender()
-    es.connect()
-    
     surl = create_presigned_url()
     to_address = str(event['queryStringParameters']['email'])
     name =  unquote(str(event['queryStringParameters']['name']))
-    #surl =  unquote(str(event['queryStringParameters']['surl']))
     title =  unquote(str(event['queryStringParameters']['title']))
     company =  unquote(str(event['queryStringParameters']['company']))
     phone =  unquote(str(event['queryStringParameters']['phone']))
     print(to_address)
     print(name)
     print(surl)
-      
-    msg = compose_msg(to_address,name,surl) 
-    
-    es.send_email(to_address,msg)
-
-    es.disconnect()
-    return {
+        
+    try:
+        es = email_sender()
+        es.connect() 
+        msg = compose_msg(to_address,name,surl) 
+        es.send_email(to_address,msg)
+        print("Message sent successfully")
+        es.disconnect()
+        return {
         'statusCode': 200,
         'headers': {
             'Access-Control-Allow-Headers': '*',
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         },
-        'body': json.dumps('Hello from your new Amplify Python lambda!')
-  }
+        'body': json.dumps('Message sent successfully!')
+        }
+    except SMTPResponseException as e:
+        error_code = e.smtp_code
+        error_message = e.smtp_error
+        return {
+        'statusCode': error_code,
+        'headers': {
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
+        'body': json.dumps(error_message)
+        }
