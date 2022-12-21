@@ -27,6 +27,8 @@
     "react-phone-number-input": "^3.2.11",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
+    "react-select": "^5.7.0",
+    "react-select-country-list": "^2.2.3",
     "react-topbar-progress-indicator": "^4.1.1",
     "reactstrap": "^9.1.4",
     "web-vitals": "^2.1.4"

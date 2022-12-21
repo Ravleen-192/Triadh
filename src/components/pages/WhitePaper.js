@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import Paper from '@mui/material/Paper';
+
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import WP from '../../image/Whitepaper.jpg';
+import WP from '../../image/EN-EB-BigBookofDS.png';
+import LogoTriadh from '../../image/logo_new.png'
 import { FormErrors } from '../FormErrors';
 import { Col, Label } from 'reactstrap';
 import { Helmet } from "react-helmet";
@@ -46,7 +46,7 @@ export default class WhitePaper extends Component {
       emailValid: false,
       companyValid: false,
       formValid: false,
-      sendMailLink: "https://tnqr3vc7ed.execute-api.us-east-1.amazonaws.com/default/sendwpmail-dev",
+      sendMailLink: "https://e3xo8zk3xc.execute-api.us-west-2.amazonaws.com/default/sendWPMail-dev"
 
     };
     mcontext = this;
@@ -132,11 +132,11 @@ export default class WhitePaper extends Component {
     switch (fieldName) {
       case 'Name':
         console.log("validate field", fieldName);
-        nameValid = value.length >= 4;
+        nameValid = value.length >= 3;
         fieldValidationErrors.Name = nameValid ? '' : ' is too short';
         break;
       case 'Title':
-        titleValid = value.length >= 4;
+        titleValid = value.length >= 2;
         fieldValidationErrors.Title = titleValid ? '' : ' is too short';
         break;
 
@@ -183,56 +183,76 @@ export default class WhitePaper extends Component {
         </Helmet>
         <div>{this.state.loading && <TopBarProgress />}</div>
         <ThemeProvider theme={theme}>
-          <Grid container component="main" sx={{ height: '600' }}>
+        <section class="article-section custom-container " >
+        <div class="container components-main-container">
+          <div class="row justify-content-between">
+            <div class="component-area column-component col-6 col-md-9 col-lg-9 content-area pb-2 px-xl-0">
+              <div class="mt-4">
+              <Link className="link " to='/'><img loading="lazy" src={LogoTriadh} alt="Triadh Logo" width="150" height="50" class="alignnone size-medium" role="img" />
+            </Link>
+             </div>
+          </div>
+          <div class="component-area column-component col-6 col-md-3 col-lg-3 content-area py-4">
+            <p class="h4" style={{color:'#0D9F98'}}>Data science simplified</p>
+        </div>
+        </div>
+        </div>
+        </section>
+      <section class="article-section custom-container container-fluid has-background"  style={{backgroundColor:'#0D9F98', minHeight:'300px'}}>
+        <div class="container components-main-container">
+        <div class="row justify-content-between">
+          <div class="component-area column-component col-12 col-md-6 col-lg-6 content-area pt-3 pb-0 px-xl-0 mt-4 mt-lg-3 d-flex flex-column justify-content-center">
+              <div class="mb-1" style={{ fontFamily: "DM Sans", fontSize: "32px", lineHeight: "46px", color:" #ffffff", fontWeight:"500"}}>eBook
+        </div>
+            <h1 class="mb-1" style={{ fontFamily: "DM Sans", fontSize: "40px", lineHeight: "52px", color: "#ffffff",fontWeight:"600"}}>The Big Book of Data Science Use Cases</h1>
+        <p class="b1-regular" style={{fontSize: "25px", lineHeight: "35px",fontFamily: "DM Sans", color:"#ffffff"}}>Your complete how-to guide to putting data science to work — plus code samples and notebooks</p>
+      </div>
+      <div class="col-auto component-area mx-auto content-area empty-component ">
+        </div>
+        <div class="component-area column-component col-12 col-md-3 col-lg-3 content-area p-0 graphic_header">
+          <p>
+            <img loading="lazy" src={ WP} alt="" width="300" height="300" class="alignleft none size-medium wp-image-196209 lazy lz-entered lz-loaded" sizes="(max-width: 300px) 100vw, 300px" data-ll-status="loaded"/>
+            </p>
+        </div>
+        </div>
+        </div>
+      </section>
+      <section class="article-section custom-container pt-5 mt-4 article-with-form">
+          <Grid container component="main" >
             <CssBaseline />
-            <Grid
-              item
-              xs={false}
-              sm={4}
-              md={7}
-              sx={{
-                backgroundImage: `url(${WP})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundColor: (t) =>
-                  t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                textAlign: 'center',
-              }}
-            >
-              <br />
-              <br />
-              <h2>What are Data Mesh Principles and Logical Architecture</h2>
-              <h3>How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh</h3>
-
-
-              <h3> Become data-driven, use data to compete, or use data at scale to drive value</h3>
-              <h4>Download Triadh’s new white paper to learn: </h4>
-
-              <p>Today’s landscape of operational data and analytical data.
-                Operational data sits in databases behind business capabilities served with microservices,
-                has a transactional nature, keeps the current state and serves the needs of
-                the applications running the business.
-                Analytical data is a temporal and aggregated view of the facts of the business over time,
-                often modeled to provide retrospective or future-perspective insights;
-                it trains the ML models or feeds the analytical reports. </p>
-              <h2>Get a headstart now.</h2></Grid>
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <div class="container components-main-container">
+            <div class="row justify-content-between">
+              <div class="component-area column-component col-12 col-md-6 col-lg-6 content-area pb-5 pb-md-0" style ={window.innerWidth > 750 ? {order:"0"} : {order:"1"} }>
+                <p>The world of data science is evolving so quickly that it’s challenging to find real-life use cases that are relevant to your day-to-day work.</p>
+                <p>That’s why we’ve created this comprehensive guide you can start using right away. Get everything you need — use cases, code samples and notebooks — so you can start putting the Databricks Lakehouse Platform to work today.</p>
+                <p>Plus, you’ll get case studies from leading companies like Comcast, Regeneron and Nationwide.</p>
+                <p>You’ll learn about:</p>
+                <ul class="mb-4">
+                  <li>Time series analysis for fraud detection</li>
+                  <li>Techniques such as dynamic time warping to improve sales and revenue forecasts</li>
+                  <li>How to execute fine-grained time series forecasting at scale with Facebook Prophet</li>
+                  <li>Parallelizing large simulations with Apache Spark<sup>TM</sup></li>
+                </ul>
+              </div>
+              <div class="component-area column-component col-12 col-md-6 col-lg-6 content-area pb-5 pb-md-0" style ={window.innerWidth > 750 ? {order:"1"} : {order:"0"} }>
+            
               <Box
                 sx={{
-                  my: 4,//8
+                  my: 0,//8
                   mx: 4,//4
+                  backgroundRepeat: 'no-repeat',
+                  backgroundColor: (t) =>
+                    t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                  backgroundPosition: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
 
                 }}
               >
-                <Avatar sx={{ m: 1, bgcolor: '#0D9F98' }}>
-                  <LockOutlinedIcon />
-                </Avatar>
+               
                 <Typography component="h1" variant="h5">
-                  Fill out the form.
+                 Read Now
 
                 </Typography>
                 {this.state.alertSuccess === 'success' ? <Alert severity="success" onClose={this.onDismiss}>
@@ -241,12 +261,12 @@ export default class WhitePaper extends Component {
                   : this.state.alertSuccess === 'danger' ? <Alert severity="error" onClose={this.onDismiss}>
                     {this.state.msgAlert}
                   </Alert> : null}
-                <div className="container-fluid text-center  contact-val">
+                <div>
                   <Col md='12' sm="12" xs="12" lg="12" xl="12">
                     <FormErrors formErrors={this.state.formErrors} />
                   </Col>
                 </div>
-                <div className=" container-fluid input-text " md="12" sm="12" xs="12" lg="12" xl="12">
+                <div  md="12" sm="12" xs="12" lg="12" xl="12">
 
                   <div className=" td__header-content" md="12" sm="12" xs="12" lg="12" xl="12">
                     <div><Label className="content lbl_txt">Name:<sup className="red_star">*</sup></Label></div>
@@ -371,24 +391,30 @@ export default class WhitePaper extends Component {
 
                     </div>
                   </div>
+                  <Button sx={{ mt: 3, mb: 2, backgroundColor: '#0D9F98' }}
+                type="submit"
+                fullWidth
+                variant="outlined"
+                onClick={() => this.submitForm()}
+                
+              >
+                Get the eBook
+              </Button>
+                {this.state.errMessage ? 
+              <div className="container-fluid mt_20 mb_20">
+                <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
+                  <div className="row text-center error-lbl-textarea">{this.state.errMessage}</div> 
+                </Col>
+              </div>: null}
                 </div>
-                <div className="container-fluid input-text">
-                  <Col >
-                    <div className="container-fluid text-center">
-                      <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
-                        <Button className="submitBtn" onClick={() => this.submitForm()}>Submit</Button>
-                      </Col>
-                    </div>
-                    <div className="container-fluid mb_10">
-                      <Col md='12 vcenter' sm="12" xs="12" lg="12" xl="12">
-                        {this.state.errMessage ? <div className="row text-center error-lbl-textarea">{this.state.errMessage}</div> : null}
-                      </Col>
-                    </div>
-                  </Col>
-                </div>
+                
               </Box>
-            </Grid>
+                  </div>
+            
+          </div>
+          </div>
           </Grid>
+          </section >
         </ThemeProvider>
       </div >
     );

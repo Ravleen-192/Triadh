@@ -21,17 +21,17 @@ function App() {
     <>
       <Router>
         
-          <Navigate />
+          
           <Routes>
            
-                <Route exact path="/" element={<Home />} />
+                <Route exact path="/" element={<><Navigate /><Home /></>} />
 
-                <Route exact path="/services" element={<Services />} />
-                <Route exact path="/company" element={<Company />} />
-                <Route exact path="/contact" element={<Contact />} />
-                <Route exact path="/plutus" element={<Plutus />} />
-                <Route exact path="/helios" element={<Helios />} />
-                <Route exact path="/theia" element={<Theia />} />
+                <Route exact path="/services" element={<><Navigate /><Services /></>} />
+                <Route exact path="/company" element={<><Navigate /><Company /></>} />
+                <Route exact path="/contact" element={<><Navigate /><Contact /></>} />
+                <Route exact path="/plutus" element={<><Navigate /><Plutus /></>} />
+                <Route exact path="/helios" element={<><Navigate /><Helios /></>} />
+                <Route exact path="/theia" element={<><Navigate /><Theia /></>} />
                 <Route exact path="/whitepaper" element={<WhitePaper />} />
             
           </Routes>
