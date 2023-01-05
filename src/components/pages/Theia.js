@@ -7,7 +7,7 @@ import Theiaimg from '../../image/Theiaimg.jpg';
 import ServOverview from '../../image/ServiceOverview.png';
 
 import { Helmet } from "react-helmet";
-var mContext;
+
 
 
 export default class Theia extends Component {
@@ -20,7 +20,7 @@ export default class Theia extends Component {
             isFlipped3: false,
             isShow: true,
         };
-        mContext = this;
+       
     }
     componentWillMount() {
         window.scrollTo(0, 0);

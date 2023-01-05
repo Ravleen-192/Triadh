@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Col, } from 'reactstrap';
-
 import '../../App.css'
 
 import Heliosimg from '../../image/Heliosimg.jpg';
 import ServOverview from '../../image/ServiceOverview-new.png';
 
 import { Helmet } from "react-helmet";
-var mContext;
+
 
 export default class Helios extends Component {
     constructor(props) {
@@ -18,7 +16,7 @@ export default class Helios extends Component {
             isFlipped3: false,
             isShow: true,
         };
-        mContext = this;
+      
     }
     componentWillMount() {
         window.scrollTo(0, 0);

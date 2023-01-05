@@ -5,7 +5,8 @@ import '../../App.css'
 import Plutusimg from '../../image/Plutusimg1.jpg';
 import ServOverview from '../../image/ServiceOverview.png';
 import { Helmet } from "react-helmet";
-var mContext;
+
+
 
 
 export default class Plutus extends Component {
@@ -18,7 +19,8 @@ export default class Plutus extends Component {
             isFlipped3: false,
             isShow: true,
         };
-        mContext = this;
+      
+        
     }
     componentWillMount() {
         window.scrollTo(0, 50);
