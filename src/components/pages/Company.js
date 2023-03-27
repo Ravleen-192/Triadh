@@ -46,7 +46,7 @@ export default class Company extends Component {
           </Col>
         </div>
         <div className="row mt_20">
-          <Col md="6" sm="12" xs="12" lg="6" xl="6" className="mb_20 company" >
+          <Col md="12" sm="12" xs="12" lg="12" xl="12" className="mb_20 company" >
             <div className="card">
               <div className="box">
                 <div className="img">
@@ -63,22 +63,7 @@ export default class Company extends Component {
             </div>
           </Col>
          
-          <Col md="6" sm="12" xs="12" lg="6" xl="6" className="mb_20 company" >
-            <div class="card">
-                <div class="box">
-                    <div class="img">
-                        <img src={velImg}/>
-                    </div>
-                    <h2>VELAYUDHAM MURUGESAN<br/><span>CTO</span></h2>
-                    <p> 25 Years of Software & Consumer Electronics Product Development experience.</p>
-                    <span>
-                      <ul>
-                        <li><a onClick={()=>window.open("https://www.linkedin.com/in/velayudhammurugesan/", "_blank")}><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                      </ul>
-                    </span>
-                </div>
-            </div>
-          </Col>
+         
         </div>
       
       </div>
